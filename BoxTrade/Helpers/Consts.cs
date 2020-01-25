@@ -13,6 +13,6 @@ namespace BoxTrade.Helpers
         /// <summary>
         /// url orders of the Forge region
         /// </summary>
-        public string RequestString => "https://esi.evetech.net/latest/markets/10000002/orders";
+        public string RequestString => $"https://esi.evetech.net/latest/markets/{(int)Regions.TheForge}/orders";
     }
 }

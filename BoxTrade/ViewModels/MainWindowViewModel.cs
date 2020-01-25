@@ -59,10 +59,11 @@ namespace BoxTrade.ViewModels
                 string OrdersJson = await Source.Instance.GetDataAsync($"{Consts.Instance.RequestString}/?type_id={model.Id}");
                 var orders = JsonConvert.DeserializeObject<List<OrderModel>>(OrdersJson); // TODO: why not work with CamelCase properties?
 
-                model.BuyPrice = (decimal)orders.Where(x => x.is_buy_order && x.system_id == 30000144).Max(x => x.price); // TODO: add system const
+                model.BuyPrice = (decimal)orders.Where(x => x.is_buy_order && x.system_id == (int)Systems.Perimeter).Max(x => x.price);
                 model.NPCSellPriceTax = model.NPCSellPrice * (100 - SellTax) / 100;
                 model.MarginIsk = model.NPCSellPriceTax - model.BuyPrice * (100 + BuyTax) / 100;
-                model.MarginPercent = model.MarginIsk / model.BuyPrice; // TODO: check correct
+                model.MarginPercent = model.MarginIsk / model.BuyPrice * 100;
+                model.MarginSum = model.Count * model.MarginIsk;
             }
             catch { } // TODO: add zero/error result logic
         }
