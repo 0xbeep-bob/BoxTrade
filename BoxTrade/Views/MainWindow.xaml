@@ -2,10 +2,12 @@
     x:Class="BoxTrade.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:BoxTrade.ViewModels"
-    Title="MainWindow"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="Box Trade"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
@@ -14,15 +16,18 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
-    
+
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding NewTaxCommand}" />
+    </Window.InputBindings>
+
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <DataGrid
-            ItemsSource="{Binding ObserveList}"
-            Style="{DynamicResource DataGridStyle1}">
+        <DataGrid ItemsSource="{Binding ObserveList}" Style="{DynamicResource DataGridStyle1}">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
@@ -71,5 +76,55 @@
                     Header="Margin Sum, isk" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <GroupBox
+            Grid.Row="1"
+            HorizontalAlignment="Left"
+            Header="Trader Tax, %">
+            <Grid ShowGridLines="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Broker's Fee Sell" ToolTip="0.00 format" />
+                <Label
+                    Grid.Row="1"
+                    Content="Sales Tax"
+                    ToolTip="0.00 format" />
+
+                <xctk:DecimalUpDown
+                    Name="Sell_Tax"
+                    Grid.Column="1"
+                    Width="50"
+                    Height="20"
+                    AllowSpin="True"
+                    Increment="0.01"
+                    ShowButtonSpinner="False"
+                    Value="{Binding SellTax, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox
+                    Name="Buy_Tax"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="50"
+                    Height="20"
+                    Padding="5,0,0,0"
+                    VerticalContentAlignment="Center"
+                    SelectedIndex="5"
+                    Text="{Binding BuyTax, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBoxItem Content="0.0" />
+                    <ComboBoxItem Content="0.1" />
+                    <ComboBoxItem Content="0.2" />
+                    <ComboBoxItem Content="0.3" />
+                    <ComboBoxItem Content="0.4" />
+                    <ComboBoxItem Content="0.5" />
+                </ComboBox>
+            </Grid>
+        </GroupBox>
+
     </Grid>
 </Window>

@@ -13,11 +13,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace BoxTrade.ViewModels
 {
     public class MainWindowViewModel : NotifyPropertyChanged
     {
+        public ICommand NewTaxCommand { get; }
+
         private decimal _sellTax;
         private decimal _buyTax;
 
@@ -27,8 +30,9 @@ namespace BoxTrade.ViewModels
 
         public MainWindowViewModel()
         {
-            SellTax = 2.25m; // TODO: move to ui
-            BuyTax = 0.5m; // TODO: move to ui
+            NewTaxCommand = new Command(NewTaxCommandBehavior);
+
+            SellTax = 2.25m;
 
             ObserveList = new ObservableCollection<ObserveModel>()
             {
@@ -66,6 +70,17 @@ namespace BoxTrade.ViewModels
                 model.MarginSum = model.Count * model.MarginIsk;
             }
             catch { } // TODO: add zero/error result logic
+        }
+
+        private void NewTaxCommandBehavior()
+        {
+            ObserveList.AsParallel().ForAll(x =>
+            {
+                x.NPCSellPriceTax = x.NPCSellPrice * (100 - SellTax) / 100;
+                x.MarginIsk = x.NPCSellPriceTax - x.BuyPrice * (100 + BuyTax) / 100;
+                x.MarginPercent = x.MarginIsk / x.BuyPrice * 100;
+                x.MarginSum = x.Count * x.MarginIsk;
+            });
         }
     }
 }
