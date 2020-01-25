@@ -39,11 +39,6 @@ namespace BoxTrade.Models
                 MarginSum = Count * MarginIsk;
             }
         }
-        public decimal? MarginSum { get => _marginSum; set { SetPropertyValue(ref _marginSum, value); } }
-
-        public ObserveModel()
-        {
-            Count = 1;
-        }
+        public decimal? MarginSum { get => _marginSum; set { SetPropertyValue(ref _marginSum, value); } }        
     }
 }

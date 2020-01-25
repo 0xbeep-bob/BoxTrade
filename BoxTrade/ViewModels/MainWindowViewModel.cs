@@ -36,10 +36,10 @@ namespace BoxTrade.ViewModels
 
             ObserveList = new ObservableCollection<ObserveModel>()
             {
-                new ObserveModel(){ Id = 19417, Name = "19th Tier Overseer's Personal Effects", NPCSellPrice = 51680000 },
-                new ObserveModel(){ Id = 19419, Name = "21th Tier Overseer's Personal Effects", NPCSellPrice = 80000000 },
-                new ObserveModel(){ Id = 19421, Name = "23th Tier Overseer's Personal Effects", NPCSellPrice = 133837000 },
-                new ObserveModel(){ Id = 48121, Name = "Triglavian Survey Database", NPCSellPrice = 100000 }
+                new ObserveModel(){ Id = 19417, Name = "19th Tier Overseer's Personal Effects", NPCSellPrice = 51680000, Count=100 },
+                new ObserveModel(){ Id = 19419, Name = "21th Tier Overseer's Personal Effects", NPCSellPrice = 80000000, Count=100 },
+                new ObserveModel(){ Id = 19421, Name = "23th Tier Overseer's Personal Effects", NPCSellPrice = 133837000, Count=100 },
+                new ObserveModel(){ Id = 48121, Name = "Triglavian Survey Database", NPCSellPrice = 100000, Count=100000 }
             };
 
             ObserveList.AsParallel().ForAll(async x => await CalculateOrderAsync(x));
